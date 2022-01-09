@@ -17,3 +17,10 @@
   register: cryptography_version
   when:
     - ansible_python_version is version('3.0', '>=')
+
+- name: 'mkdir openssl path'
+  file:
+    path: '{{ openssl_path_ssl }}'
+    state: directory
+    owner: '{{ openssl_user }}'
+    group: '{{ openssl_group }}'
