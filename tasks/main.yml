@@ -11,8 +11,6 @@
 
 - name: implement configure
   import_tasks: configure.yml
-  when:
-    - common_only_deploy == False
 
 - name: Implement task install
   import_tasks: install.yml

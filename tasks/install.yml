@@ -22,7 +22,8 @@
   args:
     creates: '{{ openssl_path_ssl }}/ca.crt'
 
-- stat:
+- name: 'register csr domain'
+  stat:
     path: '{{ openssl_path_ssl }}/ca.csr'
   register: domain_csr
 
@@ -33,8 +34,9 @@
     common_name: '{{ openssl_domain }}'
   when: not domain_csr.stat.exists
 
-- stat:
-    path: '{{ openssl_path_ssl }}/{{ domain }}.crt'
+- name: 'register crt domain'
+  stat:
+    path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.crt'
   register: domain_crt
 
 - name: 'generate : ssl : {{ openssl_domain }}'
