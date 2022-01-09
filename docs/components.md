@@ -1,8 +1,8 @@
-<!-- Space: AnsibleRoleTemplate -->
+<!-- Space: AnsibleRoleOpenSSL -->
 <!-- Parent: Project -->
 <!-- Title: Components -->
 
-<!-- Label: AnsibleRoleTemplate -->
+<!-- Label: AnsibleRoleOpenSSL -->
 <!-- Label: Project -->
 <!-- Label: Components -->
 <!-- Include: docs/disclaimer.md -->

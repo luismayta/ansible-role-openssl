@@ -1,8 +1,8 @@
 ---
-# vars file for ansible-role-name
+# vars file for openssl
 
 _root_group: root
-_ansible-role-name_packages:
+_openssl_packages:
   - software-properties-common
   - python-software-properties
   - wget
