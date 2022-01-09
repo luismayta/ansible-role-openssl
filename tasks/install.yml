@@ -18,7 +18,7 @@
   when: not domain_key.stat.exists
 
 - name: 'generate : ssl : ca'
-  shell: "openssl req -x509 -new -nodes -key {{ openssl_path_ssl }}/ca.key -sha256 -days 3650 -out {{ openssl_path_ssl }}/ca.crt -subj '{{ openssl_base_subj }}/CN={{ openssl_domain }}'"
+  shell: "openssl req -x509 -new -nodes -key {{ openssl_path_ssl }}/ca.key -sha256 -days 3650 -out {{ openssl_path_ssl }}/ca.crt -subj '{{ openssl_base_subj }}/CN={{ openssl_fqdn }}'"
   args:
     creates: '{{ openssl_path_ssl }}/ca.crt'
 
