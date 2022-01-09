@@ -1,2 +1,8 @@
 ---
 openssl_only_deploy: true
+
+openssl_packages_python:
+  - python-openssl
+
+openssl_packages_python3:
+  - python3-openssl

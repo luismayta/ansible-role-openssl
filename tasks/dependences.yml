@@ -1,16 +1,41 @@
 ---
-- name: Update apt cache.
-  apt: update_cache=yes cache_valid_time=600
-  when: ansible_os_family == 'Debian'
-
 - name: Install openssl package dependencies
   ansible.builtin.package:
     name: '{{ openssl_packages }}'
     state: present
   become: true
   register: install_openssl_packages
-  when: openssl_packages is defined
+  when:
+    - openssl_packages is defined
   tags:
     - install
-    - apt
-    - update_cache
+
+- name: Install openssl package python
+  ansible.builtin.package:
+    name: '{{ openssl_packages_python }}'
+    state: present
+  become: true
+  register: install_openssl_packages_python
+  when:
+    - openssl_packages_python is defined
+    - not ansible_os_family == 'Darwin' and ansible_python_version is version('3.0', '<')
+  tags:
+    - install
+
+- name: Install openssl package python 3
+  ansible.builtin.package:
+    name: '{{ openssl_packages_python3 }}'
+    state: present
+  become: true
+  register: install_openssl_packages_python3
+  when:
+    - openssl_packages_python3 is defined
+    - not ansible_os_family == 'Darwin' and  ansible_python_version is version('3.0', '>=')
+  tags:
+    - install
+
+- name: Install pyOpenSSL
+  become: True
+  pip:
+    name: pyOpenSSL
+  when: ansible_os_family == 'Darwin'

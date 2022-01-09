@@ -1,8 +1,0 @@
----
-# vars file for openssl
-
-_root_group: root
-_openssl_packages:
-  - software-properties-common
-  - python-software-properties
-  - wget
