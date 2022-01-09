@@ -1,9 +1,0 @@
----
-- name: Create files openssl
-  become: true
-  file:
-    path: '{{ item.path }}'
-    state: '{{ item.state }}'
-    owner: '{{ item.owner }}'
-  with_items: '{{ _openssl_create_files | default({}) }}'
-  when: _openssl_create_files is defined
