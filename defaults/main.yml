@@ -6,3 +6,9 @@ openssl_packages_python:
 
 openssl_packages_python3:
   - python3-openssl
+
+openssl_path_ssl: /etc/keys/ssl
+openssl_user: ubuntu
+openssl_group: ubuntu
+openssl_domain: hadenlabs.local
+openssl_base_subj: '/C=NL/ST={{ openssl_domain }}/L={{ openssl_domain }}/O={{ openssl_domain }}/OU={{ openssl_domain }}'

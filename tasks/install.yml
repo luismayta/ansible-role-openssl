@@ -1,2 +1,48 @@
 ---
-- include_tasks: 'install.d/{{ansible_os_family | lower }}.yml'
+- stat:
+    path: '{{ openssl_path_ssl }}/ca.key'
+  register: ca_key
+
+- stat:
+    path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.key'
+  register: domain_key
+
+- name: 'generate : ssl : private key RSA 4096 ca'
+  openssl_privatekey:
+    path: '{{ openssl_path_ssl }}/ca.key'
+  when: not ca_key.stat.exists
+
+- name: 'generate : ssl : private key RSA 4096 {{ domain }}'
+  openssl_privatekey:
+    path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.key'
+  when: not domain_key.stat.exists
+
+- name: 'generate : ssl : ca'
+  shell: "openssl req -x509 -new -nodes -key {{ openssl_path_ssl }}/ca.key -sha256 -days 3650 -out {{ openssl_path_ssl }}/ca.crt -subj '{{ openssl_base_subj }}/CN={{ openssl_domain }}'"
+  args:
+    creates: '{{ openssl_path_ssl }}/ca.crt'
+
+- stat:
+    path: '{{ openssl_path_ssl }}/ca.csr'
+  register: domain_csr
+
+- name: 'generate : ssl : csr domain'
+  openssl_csr:
+    path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.csr'
+    privatekey_path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.key'
+    common_name: '{{ openssl_domain }}'
+  when: not domain_csr.stat.exists
+
+- stat:
+    path: '{{ openssl_path_ssl }}/{{ domain }}.crt'
+  register: domain_crt
+
+- name: 'generate : ssl : {{ openssl_domain }}'
+  openssl_certificate:
+    path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.crt'
+    privatekey_path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.key'
+    csr_path: '{{ openssl_path_ssl }}/{{ openssl_domain }}.csr'
+    ownca_path: '{{ openssl_path_ssl }}/ca.crt'
+    ownca_privatekey_path: '{{ openssl_path_ssl }}/ca.key'
+    provider: ownca
+  when: not domain_crt.stat.exists
